@@ -19,7 +19,7 @@ defmodule PeopleSorter.PersonListTest do
   test "PeopleList.list/0 returns an empty list", %{child_spec: child_spec} do
     pid = start_supervised!(child_spec)
 
-    assert PeopleSorter.PeopleList.list(pid) == []
+    assert PeopleSorter.get_list(pid) == []
   end
 
   test "PeopleList.list/0 returns an empty list even when killed", %{child_spec: child_spec} do
@@ -27,17 +27,17 @@ defmodule PeopleSorter.PersonListTest do
 
     Process.exit(pid, :normal)
 
-    assert PeopleSorter.PeopleList.list(pid) == []
+    assert PeopleSorter.get_list(pid) == []
   end
 
   test "PeopleList.add_person_to_list", %{child_spec: child_spec, person_1: person_1} do
     pid = start_supervised!(child_spec)
 
-    PeopleSorter.PeopleList.add_person_to_list(pid, person_1)
+    PeopleSorter.add_person(pid, person_1)
 
     assert person_1 ==
              pid
-             |> PeopleSorter.PeopleList.list()
+             |> PeopleSorter.get_list()
              |> List.first()
   end
 
@@ -49,12 +49,11 @@ defmodule PeopleSorter.PersonListTest do
   } do
     pid = start_supervised!(child_spec)
 
-    PeopleSorter.PeopleList.add_person_to_list(pid, person_1)
-    PeopleSorter.PeopleList.add_person_to_list(pid, person_2)
-    PeopleSorter.PeopleList.add_person_to_list(pid, person_3)
+    PeopleSorter.add_person(pid, person_1)
+    PeopleSorter.add_person(pid, person_2)
+    PeopleSorter.add_person(pid, person_3)
 
-    assert [person_3, person_2, person_1] ==
-             PeopleSorter.PeopleList.list(pid)
+    assert [person_3, person_2, person_1] == PeopleSorter.get_list(pid)
   end
 
   defp create_random_person() do

@@ -1,9 +1,9 @@
 defmodule PeopleSorter do
   @moduledoc """
-  PeopleSorter keeps the contexts that define your domain
-  and business logic.
-
-  Contexts are also responsible for managing your data, regardless
-  if it comes from the database, an external API or others.
+  People Sorter takes in a list of Persons and returns them sorted.
   """
+
+  defdelegate get_list(pid), to: PeopleSorter.PeopleList, as: :list
+  defdelegate add_person(person), to: PeopleSorter.PeopleList, as: :add_person_to_list
+  defdelegate add_person(pid, person), to: PeopleSorter.PeopleList, as: :add_person_to_list
 end
