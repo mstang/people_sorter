@@ -11,6 +11,7 @@ defmodule PeopleSorter.Application do
       PeopleSorterWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: PeopleSorter.PubSub},
+      {PeopleSorter.PeopleList, name: PeopleSorter.PeopleList},
       # Start the Endpoint (http/https)
       PeopleSorterWeb.Endpoint
       # Start a worker by calling: PeopleSorter.Worker.start_link(arg)
