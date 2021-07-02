@@ -21,6 +21,10 @@ defmodule PeopleSorter.PeopleList do
     GenServer.call(name, :list)
   end
 
+  def list_sorted_by_dob(name \\ __MODULE__) do
+    GenServer.call(name, :sort_by_dob)
+  end
+
   def add_person_to_list(name \\ __MODULE__, person) do
     GenServer.cast(name, {:add_person_to_list, person})
   end
@@ -28,6 +32,12 @@ defmodule PeopleSorter.PeopleList do
   @impl true
   def handle_call(:list, _from, people_list) do
     {:reply, people_list, people_list}
+  end
+
+  @impl true
+  def handle_call(:sort_by_dob, _from, people_list) do
+    sorted_list = Enum.sort_by(people_list, & &1.date_of_birth, {:asc, Date})
+    {:reply, sorted_list, people_list}
   end
 
   @impl true
