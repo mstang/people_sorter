@@ -16,13 +16,13 @@ defmodule PeopleSorter.PersonListTest do
     {:ok, child_spec: child_spec, person_1: person_1, person_2: person_2, person_3: person_3}
   end
 
-  test "PeopleList.list/0 returns an empty list", %{child_spec: child_spec} do
+  test "returns an empty list", %{child_spec: child_spec} do
     pid = start_supervised!(child_spec)
 
     assert PeopleSorter.get_list(pid) == []
   end
 
-  test "PeopleList.list/0 returns an empty list even when killed", %{child_spec: child_spec} do
+  test "returns an empty list even when killed", %{child_spec: child_spec} do
     pid = start_supervised!(child_spec)
 
     Process.exit(pid, :normal)
@@ -30,7 +30,7 @@ defmodule PeopleSorter.PersonListTest do
     assert PeopleSorter.get_list(pid) == []
   end
 
-  test "PeopleList.add_person_to_list", %{child_spec: child_spec, person_1: person_1} do
+  test "add_person", %{child_spec: child_spec, person_1: person_1} do
     pid = start_supervised!(child_spec)
 
     PeopleSorter.add_person(pid, person_1)
