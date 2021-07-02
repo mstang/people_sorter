@@ -25,6 +25,14 @@ defmodule PeopleSorter.PeopleList do
     GenServer.call(name, :sort_by_dob)
   end
 
+  def list_sorted_by_last_name(name \\ __MODULE__) do
+    GenServer.call(name, :sort_by_last_name)
+  end
+
+  def list_sorted_by_color_last_name(name \\ __MODULE__) do
+    GenServer.call(name, :sort_by_color_last_name)
+  end
+
   def add_person_to_list(name \\ __MODULE__, person) do
     GenServer.cast(name, {:add_person_to_list, person})
   end
@@ -41,7 +49,41 @@ defmodule PeopleSorter.PeopleList do
   end
 
   @impl true
+  def handle_call(:sort_by_last_name, _from, people_list) do
+    last_name_desc = fn lhs, rhs ->
+      case compare(Map.get(lhs, :last_name), Map.get(rhs, :last_name)) do
+        :lt -> false
+        _ -> true
+      end
+    end
+
+    sorted_list = Enum.sort(people_list, last_name_desc)
+
+    {:reply, sorted_list, people_list}
+  end
+
+  @impl true
+  def handle_call(:sort_by_color_last_name, _from, people_list) do
+    color_last_name = fn lhs, rhs ->
+      case {compare(Map.get(lhs, :favorite_color), Map.get(rhs, :favorite_color)),
+            compare(Map.get(lhs, :last_name), Map.get(rhs, :last_name))} do
+        {:lt, _} -> true
+        {:eq, :lt} -> true
+        {_, _} -> false
+      end
+    end
+
+    sorted_list = Enum.sort(people_list, color_last_name)
+
+    {:reply, sorted_list, people_list}
+  end
+
+  @impl true
   def handle_cast({:add_person_to_list, person}, people_list) do
     {:noreply, [person | people_list]}
   end
+
+  defp compare(x, x), do: :eq
+  defp compare(x, y) when x > y, do: :gt
+  defp compare(_, _), do: :lt
 end
