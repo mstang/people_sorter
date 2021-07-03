@@ -1,7 +1,7 @@
 defmodule PeopleSorter.FileLoaderTest do
   use ExUnit.Case, async: true
 
-  alias PeopleSorter.{FileLoader, Person}
+  alias PeopleSorter.FileLoader
 
   test "load pipe-delimited file" do
     count =
@@ -21,6 +21,7 @@ defmodule PeopleSorter.FileLoaderTest do
     assert count == 30
   end
 
+  @tag focus: true
   test "load space-delimited file" do
     count =
       "text_space.txt"
@@ -28,23 +29,5 @@ defmodule PeopleSorter.FileLoaderTest do
       |> Enum.count()
 
     assert count == 30
-  end
-
-  test "parse pipe delimited person" do
-    parsed = Person.parse_person_line("Bauch|Elliott|luisa.kunde@schmeler.name|Green|4/4/1930")
-
-    assert parsed == ["Bauch", "Elliott", "luisa.kunde@schmeler.name", "Green", "4/4/1930"]
-  end
-
-  test "parse comma delimited person" do
-    parsed = Person.parse_person_line("Bauch,Elliott,luisa.kunde@schmeler.name,Green,4/4/1930")
-
-    assert parsed == ["Bauch", "Elliott", "luisa.kunde@schmeler.name", "Green", "4/4/1930"]
-  end
-
-  test "parse space delimited person" do
-    parsed = Person.parse_person_line("Bauch Elliott luisa.kunde@schmeler.name Green 4/4/1930")
-
-    assert parsed == ["Bauch", "Elliott", "luisa.kunde@schmeler.name", "Green", "4/4/1930"]
   end
 end

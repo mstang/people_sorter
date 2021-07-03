@@ -5,8 +5,10 @@ defmodule PeopleSorter.CLI do
     with {sort_by, filenames} <- parse_args(args),
          :ok <- validate_sort_by(sort_by),
          :ok <- validate_filenames(filenames) do
-      create_response(sort_by, filenames)
-      |> IO.puts()
+      load_files(filenames)
+
+      print_response(sort_by)
+      # |> IO.inspect()
     else
       :sort_by_error ->
         IO.puts("--sort-by is required and must be either color, dob or last_name")
@@ -19,7 +21,6 @@ defmodule PeopleSorter.CLI do
   defp parse_args(command_line_args) do
     {parsed, filenames, _invalid} =
       OptionParser.parse(command_line_args, strict: [sort_by: :string])
-      |> IO.inspect(label: :parse_args)
 
     sort_by = parsed[:sort_by]
     {sort_by, filenames}
@@ -47,8 +48,27 @@ defmodule PeopleSorter.CLI do
     :ok
   end
 
-  def create_response(sort_by, filenames) do
-    IO.inspect(filenames, label: :filenames)
-    IO.inspect(sort_by, label: :sort_by)
+  @doc """
+  load_files - load each individual file
+  """
+  def load_files(filenames) do
+    for filename <- filenames do
+      PeopleSorter.FileLoader.load_file(filename)
+    end
+  end
+
+  def print_response(sort_by) do
+    sorted =
+      case sort_by do
+        "dob" -> PeopleSorter.get_list_sorted_by_dob()
+        "last_name" -> PeopleSorter.get_list_sorted_by_last_name()
+        "color" -> PeopleSorter.get_list_sorted_by_color_last_name()
+      end
+
+    for person <- sorted do
+      person
+      |> to_string
+      |> IO.puts()
+    end
   end
 end
