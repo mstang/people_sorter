@@ -11,6 +11,7 @@ defmodule PeopleSorter.FileLoader do
       |> Enum.map(&String.replace(&1, "\n", ""))
       |> Stream.map(&Person.parse_person_line/1)
       |> Stream.map(&Person.new/1)
+      |> Stream.filter(fn item -> !is_nil(item) end)
       |> Stream.map(&add_person/1)
       |> Enum.to_list()
     else
@@ -20,5 +21,6 @@ defmodule PeopleSorter.FileLoader do
 
   def add_person(%Person{} = person) do
     PeopleSorter.add_person(person)
+    person
   end
 end

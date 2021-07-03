@@ -29,29 +29,40 @@ defmodule PeopleSorter.Person do
     {email, _} = List.pop_at(person_list, 2)
     {color, _} = List.pop_at(person_list, 3)
     {dob, _} = List.pop_at(person_list, 4)
-    date_of_birth = convert_date_to_dob(dob)
-    PeopleSorter.Person.new(last_name, first_name, email, color, date_of_birth)
+
+    case convert_date_to_dob(dob) do
+      {:ok, date_of_birth} ->
+        PeopleSorter.Person.new(last_name, first_name, email, color, date_of_birth)
+
+      {:error, :invalid_date} ->
+        IO.puts("invalid dob(#{dob}) for #{email}, skipped")
+        nil
+    end
   end
 
   @doc """
   convert input format of Month/Day/Year to Elixir Date
   """
-  @spec convert_date_to_dob(String.t()) :: Date.t()
+  @spec convert_date_to_dob(String.t()) :: {:ok, Date.t()} | {:error, :invalid_date}
   def convert_date_to_dob(date) do
-    date_parts =
-      date
-      |> String.split("/")
-      |> Enum.map(&Integer.parse/1)
-      |> Enum.map(fn date_piece -> elem(date_piece, 0) end)
+    with int_parts <- convert_strings_to_ints(date),
+         false <- Enum.any?(int_parts, fn item -> item == :error end) do
+      date_parts = Enum.map(int_parts, fn date_piece -> elem(date_piece, 0) end)
 
-    {month, _} = List.pop_at(date_parts, 0)
-    {day, _} = List.pop_at(date_parts, 1)
-    {year, _} = List.pop_at(date_parts, 2)
+      {month, _} = List.pop_at(date_parts, 0)
+      {day, _} = List.pop_at(date_parts, 1)
+      {year, _} = List.pop_at(date_parts, 2)
 
-    case Date.new(year, month, day) do
-      {:ok, date} -> date
-      {:error, error} -> error
+      Date.new(year, month, day)
+    else
+      _ -> {:error, :invalid_date}
     end
+  end
+
+  defp convert_strings_to_ints(date) do
+    date
+    |> String.split("/")
+    |> Enum.map(&Integer.parse/1)
   end
 
   @doc """

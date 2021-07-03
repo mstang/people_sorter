@@ -21,7 +21,6 @@ defmodule PeopleSorter.FileLoaderTest do
     assert count == 30
   end
 
-  @tag focus: true
   test "load space-delimited file" do
     count =
       "text_space.txt"

@@ -6,9 +6,7 @@ defmodule PeopleSorter.CLI do
          :ok <- validate_sort_by(sort_by),
          :ok <- validate_filenames(filenames) do
       load_files(filenames)
-
       print_response(sort_by)
-      # |> IO.inspect()
     else
       :sort_by_error ->
         IO.puts("--sort-by is required and must be either color, dob or last_name")
