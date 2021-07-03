@@ -1,4 +1,5 @@
 defmodule PeopleSorter.Person do
+  @derive {Phoenix.Param, key: :email}
   @type t :: %__MODULE__{
           last_name: String.t(),
           first_name: String.t(),
@@ -6,6 +7,8 @@ defmodule PeopleSorter.Person do
           favorite_color: String.t(),
           date_of_birth: Date.t()
         }
+  @derive {Jason.Encoder,
+           only: [:last_name, :first_name, :email, :favorite_color, :date_of_birth]}
   defstruct [:last_name, :first_name, :email, :favorite_color, :date_of_birth]
 
   @spec new(String.t(), String.t(), String.t(), String.t(), Date.t()) :: t()
