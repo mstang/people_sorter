@@ -19,6 +19,7 @@ defmodule PeopleSorter.Person do
     }
   end
 
+  #! return a formatted string for outputing to the CLI
   defimpl String.Chars do
     def to_string(person) do
       person.last_name <> ":" <> person.first_name
