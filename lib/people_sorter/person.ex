@@ -19,10 +19,35 @@ defmodule PeopleSorter.Person do
     }
   end
 
+  @doc """
+  Take a list of person attributes and build a Person Struct
+  """
+  @spec new([String.t()]) :: t()
+  def new(person_list) do
+    {last_name, _} = List.pop_at(person_list, 0)
+    {first_name, _} = List.pop_at(person_list, 1)
+    {email, _} = List.pop_at(person_list, 2)
+    {color, _} = List.pop_at(person_list, 3)
+    {date_of_birth, _} = List.pop_at(person_list, 4)
+    PeopleSorter.Person.new(last_name, first_name, email, color, date_of_birth)
+  end
+
+  @doc """
+  Depending on the delimiter, split the line
+  """
+  def parse_person_line(line) do
+    cond do
+      String.contains?(line, "|") -> String.split(line, "|")
+      String.contains?(line, ",") -> String.split(line, ",")
+      true -> String.split(line, " ")
+    end
+  end
+
   defimpl String.Chars do
     def to_string(person) do
-      dob = format_date(person.date_of_birth)
-      "#{person.last_name} #{person.first_name} #{person.email} #{person.favorite_color} #{dob}"
+      date_of_birth = format_date(person.date_of_birth)
+
+      "#{person.last_name} #{person.first_name} #{person.email} #{person.favorite_color} #{date_of_birth}"
     end
 
     defp format_date(date) do

@@ -1,7 +1,7 @@
 defmodule PeopleSorter.FileLoaderTest do
   use ExUnit.Case, async: true
 
-  alias PeopleSorter.FileLoader
+  alias PeopleSorter.{FileLoader, Person}
 
   test "load pipe-delimited file" do
     count =
@@ -31,22 +31,19 @@ defmodule PeopleSorter.FileLoaderTest do
   end
 
   test "parse pipe delimited person" do
-    parsed =
-      FileLoader.parse_person_line("Bauch|Elliott|luisa.kunde@schmeler.name|Green|4/4/1930")
+    parsed = Person.parse_person_line("Bauch|Elliott|luisa.kunde@schmeler.name|Green|4/4/1930")
 
     assert parsed == ["Bauch", "Elliott", "luisa.kunde@schmeler.name", "Green", "4/4/1930"]
   end
 
   test "parse comma delimited person" do
-    parsed =
-      FileLoader.parse_person_line("Bauch,Elliott,luisa.kunde@schmeler.name,Green,4/4/1930")
+    parsed = Person.parse_person_line("Bauch,Elliott,luisa.kunde@schmeler.name,Green,4/4/1930")
 
     assert parsed == ["Bauch", "Elliott", "luisa.kunde@schmeler.name", "Green", "4/4/1930"]
   end
 
   test "parse space delimited person" do
-    parsed =
-      FileLoader.parse_person_line("Bauch Elliott luisa.kunde@schmeler.name Green 4/4/1930")
+    parsed = Person.parse_person_line("Bauch Elliott luisa.kunde@schmeler.name Green 4/4/1930")
 
     assert parsed == ["Bauch", "Elliott", "luisa.kunde@schmeler.name", "Green", "4/4/1930"]
   end
