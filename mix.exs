@@ -10,8 +10,13 @@ defmodule PeopleSorter.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      escript: escript()
     ]
+  end
+
+  defp escript do
+    [main_module: PeopleSorter.CLI]
   end
 
   # Configuration for the OTP application.

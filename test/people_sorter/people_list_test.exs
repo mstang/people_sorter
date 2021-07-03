@@ -30,7 +30,7 @@ defmodule PeopleSorter.PersonListTest do
     assert PeopleSorter.get_list(pid) == []
   end
 
-  test "add_person", %{child_spec: child_spec, person_1: person_1} do
+  test "add a person", %{child_spec: child_spec, person_1: person_1} do
     pid = start_supervised!(child_spec)
 
     PeopleSorter.add_person(pid, person_1)

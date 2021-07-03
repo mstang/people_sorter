@@ -1,6 +1,8 @@
 defmodule PeopleSorter do
   @moduledoc """
-  People Sorter takes in a list of Persons and returns them sorted.
+  People Sorter adds people to a list and returns them sorted.
+  The "public" interface to the People Sorter List Management is defined
+  here.
   """
 
   defdelegate add_person(person), to: PeopleSorter.PeopleList, as: :add_person_to_list

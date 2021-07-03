@@ -17,22 +17,27 @@ defmodule PeopleSorter.PeopleList do
     {:ok, people_list}
   end
 
+  @spec list(pid()) :: [%Person{}]
   def list(name \\ __MODULE__) do
     GenServer.call(name, :list)
   end
 
+  @spec list_sorted_by_dob(pid()) :: [%Person{}]
   def list_sorted_by_dob(name \\ __MODULE__) do
     GenServer.call(name, :sort_by_dob)
   end
 
+  @spec list_sorted_by_last_name(pid()) :: [%Person{}]
   def list_sorted_by_last_name(name \\ __MODULE__) do
     GenServer.call(name, :sort_by_last_name)
   end
 
+  @spec list_sorted_by_color_last_name(pid()) :: [%Person{}]
   def list_sorted_by_color_last_name(name \\ __MODULE__) do
     GenServer.call(name, :sort_by_color_last_name)
   end
 
+  @spec add_person_to_list(pid(), %Person{}) :: :ok
   def add_person_to_list(name \\ __MODULE__, person) do
     GenServer.cast(name, {:add_person_to_list, person})
   end

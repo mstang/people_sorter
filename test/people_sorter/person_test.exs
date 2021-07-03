@@ -4,25 +4,21 @@ defmodule PeopleSorter.PersonTest do
   alias PeopleSorter.Person
 
   test "create person" do
-    {:ok, dob} = DateTime.new(~D[2016-05-24], ~T[13:26:08.003], "Etc/UTC")
-
     test_person = %PeopleSorter.Person{
-      date_of_birth: ~U[2016-05-24 13:26:08.003Z],
+      date_of_birth: ~D[2016-05-24],
       email: "markjstang@gmail.com",
       favorite_color: "red",
       first_name: "mark",
       last_name: "stang"
     }
 
-    new_person = Person.new("stang", "mark", "markjstang@gmail.com", "red", dob)
+    new_person = Person.new("stang", "mark", "markjstang@gmail.com", "red", ~D[2016-05-24])
 
     assert test_person == new_person
   end
 
   test "to string" do
-    {:ok, dob} = DateTime.new(~D[2016-05-24], ~T[13:26:08.003], "Etc/UTC")
-
-    new_person = Person.new("stang", "mark", "markjstang@gmail.com", "red", dob)
+    new_person = Person.new("stang", "mark", "markjstang@gmail.com", "red", ~D[2016-05-24])
 
     assert "stang:mark" == to_string(new_person)
   end

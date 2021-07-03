@@ -4,11 +4,11 @@ defmodule PeopleSorter.Person do
           first_name: String.t(),
           email: String.t(),
           favorite_color: String.t(),
-          date_of_birth: DateTime.t()
+          date_of_birth: Date.t()
         }
   defstruct [:last_name, :first_name, :email, :favorite_color, :date_of_birth]
 
-  @spec new(String.t(), String.t(), String.t(), String.t(), DateTime.t()) :: t()
+  @spec new(String.t(), String.t(), String.t(), String.t(), Date.t()) :: t()
   def new(last_name, first_name, email, favorite_color, date_of_birth) do
     %__MODULE__{
       last_name: last_name,
