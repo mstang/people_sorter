@@ -87,6 +87,12 @@ defmodule PeopleSorter.PersonListTest do
 
     Enum.each(1..30, fn _i ->
       new_person = create_random_person()
+
+      #! todo remove this
+      # new_person
+      # |> to_string()
+      # |> IO.inspect()
+
       PeopleSorter.add_person(pid, new_person)
     end)
 

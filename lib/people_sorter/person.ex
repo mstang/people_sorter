@@ -19,10 +19,14 @@ defmodule PeopleSorter.Person do
     }
   end
 
-  #! return a formatted string for outputing to the CLI
   defimpl String.Chars do
     def to_string(person) do
-      person.last_name <> ":" <> person.first_name
+      dob = format_date(person.date_of_birth)
+      "#{person.last_name} #{person.first_name} #{person.email} #{person.favorite_color} #{dob}"
+    end
+
+    defp format_date(date) do
+      "#{date.month}/#{date.month}/#{date.year}"
     end
   end
 end

@@ -18,7 +18,6 @@ defmodule PeopleSorter.PersonTest do
 
   test "to string, test string formatting" do
     new_person = Person.new("stang", "mark", "markjstang@gmail.com", "red", ~D[2016-05-24])
-
-    assert "stang:mark" == to_string(new_person)
+    assert "stang mark markjstang@gmail.com red 5/5/2016" == to_string(new_person)
   end
 end
