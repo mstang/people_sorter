@@ -1,4 +1,5 @@
 defmodule PeopleSorter.Person do
+  alias PeopleSorter.Person
   @derive {Phoenix.Param, key: :email}
   @type t :: %__MODULE__{
           last_name: String.t(),
@@ -27,19 +28,23 @@ defmodule PeopleSorter.Person do
   """
   @spec new([String.t()]) :: t()
   def new(person_list) do
-    {last_name, _} = List.pop_at(person_list, 0)
-    {first_name, _} = List.pop_at(person_list, 1)
-    {email, _} = List.pop_at(person_list, 2)
-    {color, _} = List.pop_at(person_list, 3)
-    {dob, _} = List.pop_at(person_list, 4)
+    with 5 <- Enum.count(person_list) do
+      {last_name, _} = List.pop_at(person_list, 0)
+      {first_name, _} = List.pop_at(person_list, 1)
+      {email, _} = List.pop_at(person_list, 2)
+      {color, _} = List.pop_at(person_list, 3)
+      {dob, _} = List.pop_at(person_list, 4)
 
-    case convert_date_to_dob(dob) do
-      {:ok, date_of_birth} ->
-        PeopleSorter.Person.new(last_name, first_name, email, color, date_of_birth)
+      case convert_date_to_dob(dob) do
+        {:ok, date_of_birth} ->
+          PeopleSorter.Person.new(last_name, first_name, email, color, date_of_birth)
 
-      {:error, :invalid_date} ->
-        IO.puts("invalid dob(#{dob}) for #{email}, skipped")
-        nil
+        {:error, :invalid_date} ->
+          IO.puts("invalid dob(#{dob}) for #{email}, skipped")
+          nil
+      end
+    else
+      _ -> nil
     end
   end
 
@@ -47,25 +52,37 @@ defmodule PeopleSorter.Person do
   convert input format of Month/Day/Year to Elixir Date
   """
   @spec convert_date_to_dob(String.t()) :: {:ok, Date.t()} | {:error, :invalid_date}
-  def convert_date_to_dob(date) do
-    with int_parts <- convert_strings_to_ints(date),
-         false <- Enum.any?(int_parts, fn item -> item == :error end) do
-      date_parts = Enum.map(int_parts, fn date_piece -> elem(date_piece, 0) end)
-
-      {month, _} = List.pop_at(date_parts, 0)
-      {day, _} = List.pop_at(date_parts, 1)
-      {year, _} = List.pop_at(date_parts, 2)
-
-      Date.new(year, month, day)
+  def convert_date_to_dob(string_date) do
+    with parse_results <- convert_string_parts_to_int_parts(string_date),
+         false <- conversion_contains_errors?(parse_results) do
+      parse_results
+      |> remove_remainder_from_parse()
+      |> create_date_from_date_parts()
     else
       _ -> {:error, :invalid_date}
     end
   end
 
-  defp convert_strings_to_ints(date) do
+  defp convert_string_parts_to_int_parts(date) do
     date
     |> String.split("/")
     |> Enum.map(&Integer.parse/1)
+  end
+
+  defp conversion_contains_errors?(int_parts) do
+    Enum.any?(int_parts, fn item -> item == :error end)
+  end
+
+  defp remove_remainder_from_parse(int_parts) do
+    Enum.map(int_parts, fn date_piece -> elem(date_piece, 0) end)
+  end
+
+  defp create_date_from_date_parts(date_parts) do
+    {month, _} = List.pop_at(date_parts, 0)
+    {day, _} = List.pop_at(date_parts, 1)
+    {year, _} = List.pop_at(date_parts, 2)
+
+    Date.new(year, month, day)
   end
 
   @doc """
@@ -80,9 +97,16 @@ defmodule PeopleSorter.Person do
     end
   end
 
+  @doc """
+  Format date for display
+  """
+  def format_date(date) do
+    "#{date.month}/#{date.month}/#{date.year}"
+  end
+
   defimpl String.Chars do
     @doc """
-    Fornat Person for display
+    Fornat Person for display, add plenty of padding
     """
     def to_string(person) do
       last_name = String.pad_trailing(person.last_name, 30)
@@ -92,17 +116,10 @@ defmodule PeopleSorter.Person do
 
       date_of_birth =
         person.date_of_birth
-        |> format_date()
+        |> Person.format_date()
         |> String.pad_leading(11)
 
       "#{last_name} #{first_name} #{email} #{favorite_color} #{date_of_birth}"
-    end
-
-    @doc """
-    Format date for display
-    """
-    def format_date(date) do
-      "#{date.month}/#{date.month}/#{date.year}"
     end
   end
 end

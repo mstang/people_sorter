@@ -12,9 +12,10 @@ defmodule PeopleSorterWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+
     get "/records/dob", PeopleSorterWeb.RecordController, :dob
-    get "/records/last_name", PeopleSorterWeb.RecordController, :last_name
     get "/records/color", PeopleSorterWeb.RecordController, :color
+    get "/records/last_name", PeopleSorterWeb.RecordController, :last_name
 
     resources "/records", PeopleSorterWeb.RecordController,
       except: [:new, :update, :delete, :edit]

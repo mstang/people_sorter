@@ -4,6 +4,10 @@ defmodule PeopleSorter.FileLoader do
   """
   alias PeopleSorter.Person
 
+  @doc """
+  Stream a file from disk, remove newlines, parse the person line,
+  create a new person struct, strip out nils, add the person to the list
+  """
   def load_file(filename) do
     with true <- File.exists?(filename) do
       filename

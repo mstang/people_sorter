@@ -1,4 +1,7 @@
 defmodule PeopleSorter.CLI do
+  @doc """
+  Main entry point for the cli process
+  """
   def main(args \\ []) do
     IO.puts("Welcome to the People Sorter Program")
 
@@ -16,7 +19,10 @@ defmodule PeopleSorter.CLI do
     end
   end
 
-  defp parse_args(command_line_args) do
+  @doc """
+  parse the command-line arguments
+  """
+  def parse_args(command_line_args) do
     {parsed, filenames, _invalid} =
       OptionParser.parse(command_line_args, strict: [sort_by: :string])
 
@@ -36,7 +42,7 @@ defmodule PeopleSorter.CLI do
   end
 
   @doc """
-  Validate that we have at least one filename
+  Validate that we have at least one filename was provided
   """
   def validate_filenames([]) do
     :missing_filename_error
@@ -55,15 +61,18 @@ defmodule PeopleSorter.CLI do
     end
   end
 
+  @doc """
+  Print out the list of the file(s) that were processed
+  """
   def print_response(sort_by) do
-    sorted =
+    sorted_list =
       case sort_by do
         "dob" -> PeopleSorter.get_list_sorted_by_dob()
         "last_name" -> PeopleSorter.get_list_sorted_by_last_name()
         "color" -> PeopleSorter.get_list_sorted_by_color_last_name()
       end
 
-    for person <- sorted do
+    for person <- sorted_list do
       person
       |> to_string
       |> IO.puts()

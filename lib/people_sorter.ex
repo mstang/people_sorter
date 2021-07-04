@@ -28,4 +28,7 @@ defmodule PeopleSorter do
   defdelegate get_list_sorted_by_color_last_name(pid),
     to: PeopleSorter.PeopleList,
     as: :list_sorted_by_color_last_name
+
+  defdelegate parse_person_string(person), to: PeopleSorter.Person, as: :parse_person_line
+  defdelegate new_person(person), to: PeopleSorter.Person, as: :new
 end

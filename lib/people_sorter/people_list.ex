@@ -88,6 +88,16 @@ defmodule PeopleSorter.PeopleList do
     {:noreply, [person | people_list]}
   end
 
+  @impl true
+  def handle_info({:empty_table, _reason}, _state) do
+    {:noreply, []}
+  end
+
+  @impl true
+  def handle_info({:quit, reason}, state) do
+    {:stop, reason, state}
+  end
+
   defp compare(x, x), do: :eq
   defp compare(x, y) when x > y, do: :gt
   defp compare(_, _), do: :lt

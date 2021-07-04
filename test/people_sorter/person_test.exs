@@ -1,5 +1,5 @@
 defmodule PeopleSorter.PersonTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias PeopleSorter.Person
 
