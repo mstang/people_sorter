@@ -1,6 +1,6 @@
 defmodule PeopleSorter.FileLoader do
-  @doc """
-  Load the file, remove the newlines, parse the line, create a Person, add it to the list
+  @moduledoc """
+  Load the files, remove the newlines, parse the line, create a Person, add it to the list
   """
   alias PeopleSorter.Person
 
