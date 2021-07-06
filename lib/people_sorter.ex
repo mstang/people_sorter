@@ -21,6 +21,14 @@ defmodule PeopleSorter do
     to: PeopleSorter.PeopleList,
     as: :list_sorted_by_last_name
 
+  defdelegate get_list_sorted_by_color(),
+    to: PeopleSorter.PeopleList,
+    as: :list_sorted_by_color
+
+  defdelegate get_list_sorted_by_color(pid),
+    to: PeopleSorter.PeopleList,
+    as: :list_sorted_by_color
+
   defdelegate get_list_sorted_by_color_last_name(),
     to: PeopleSorter.PeopleList,
     as: :list_sorted_by_color_last_name

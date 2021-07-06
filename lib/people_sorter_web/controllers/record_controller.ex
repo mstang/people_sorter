@@ -15,7 +15,7 @@ defmodule PeopleSorterWeb.RecordController do
   color route process
   """
   def color(conn, _params) do
-    persons = PeopleSorter.get_list_sorted_by_color_last_name()
+    persons = PeopleSorter.get_list_sorted_by_color()
     render(conn, "index.json", persons: persons)
   end
 

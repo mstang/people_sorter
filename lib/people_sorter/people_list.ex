@@ -32,6 +32,11 @@ defmodule PeopleSorter.PeopleList do
     GenServer.call(name, :sort_by_last_name)
   end
 
+  @spec list_sorted_by_color(pid()) :: [%Person{}]
+  def list_sorted_by_color(name \\ __MODULE__) do
+    GenServer.call(name, :sort_by_color)
+  end
+
   @spec list_sorted_by_color_last_name(pid()) :: [%Person{}]
   def list_sorted_by_color_last_name(name \\ __MODULE__) do
     GenServer.call(name, :sort_by_color_last_name)
@@ -50,6 +55,12 @@ defmodule PeopleSorter.PeopleList do
   @impl true
   def handle_call(:sort_by_dob, _from, people_list) do
     sorted_list = Enum.sort_by(people_list, & &1.date_of_birth, {:asc, Date})
+    {:reply, sorted_list, people_list}
+  end
+
+  @impl true
+  def handle_call(:sort_by_color, _from, people_list) do
+    sorted_list = Enum.sort_by(people_list, & &1.favorite_color)
     {:reply, sorted_list, people_list}
   end
 

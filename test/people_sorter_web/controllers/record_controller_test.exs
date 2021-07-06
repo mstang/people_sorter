@@ -84,26 +84,26 @@ defmodule PeopleSorterWeb.RecordControllerTest do
   end
 
   describe "show records" do
-    test "returns records sorted by color and then last_name", %{conn: conn} do
+    test "returns records sorted by color", %{conn: conn} do
       fixture(:persons)
       conn = get(conn, Routes.record_path(conn, :color))
 
       color_last_name_list =
         json_response(conn, 200)["data"]
-        |> Enum.map(&Map.take(&1, ["favorite_color", "last_name"]))
+        |> Enum.map(&Map.take(&1, ["favorite_color"]))
 
       assert [
-               %{"favorite_color" => "Black", "last_name" => "Bailey"},
-               %{"favorite_color" => "Black", "last_name" => "Beatty"},
-               %{"favorite_color" => "Black", "last_name" => "Krajcik"},
-               %{"favorite_color" => "Blue", "last_name" => "Nitzsche"},
-               %{"favorite_color" => "Brown", "last_name" => "Ferry"},
-               %{"favorite_color" => "Brown", "last_name" => "Rolfson"},
-               %{"favorite_color" => "Green", "last_name" => "Kozey"},
-               %{"favorite_color" => "Pink", "last_name" => "Dickens"},
-               %{"favorite_color" => "Pink", "last_name" => "Dietrich"},
-               %{"favorite_color" => "Pink", "last_name" => "Rippin"},
-               %{"favorite_color" => "Pink", "last_name" => "Rippin"}
+               %{"favorite_color" => "Black"},
+               %{"favorite_color" => "Black"},
+               %{"favorite_color" => "Black"},
+               %{"favorite_color" => "Blue"},
+               %{"favorite_color" => "Brown"},
+               %{"favorite_color" => "Brown"},
+               %{"favorite_color" => "Green"},
+               %{"favorite_color" => "Pink"},
+               %{"favorite_color" => "Pink"},
+               %{"favorite_color" => "Pink"},
+               %{"favorite_color" => "Pink"}
              ] == color_last_name_list
 
       delete_people_list()
