@@ -1,4 +1,7 @@
 defmodule PeopleSorter.CLI do
+  @moduledoc """
+  This is the command line interface to People Sorter
+  """
   @doc """
   Main entry point for the cli process
   """

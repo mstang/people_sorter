@@ -1,4 +1,7 @@
 defmodule PeopleSorter.Person do
+  @moduledoc """
+  A Person is a struct that contains fields that describe a Person.
+  """
   alias PeopleSorter.Person
   @derive {Phoenix.Param, key: :email}
   @type t :: %__MODULE__{

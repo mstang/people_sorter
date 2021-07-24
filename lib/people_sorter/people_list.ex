@@ -1,4 +1,9 @@
 defmodule PeopleSorter.PeopleList do
+  @moduledoc """
+  PeopleList contains a list of Persons.
+  You can add a person to the list
+  You can request a list of persons sorted by either dob, last_name or favorite color.
+  """
   use GenServer
   alias PeopleSorter.Person
 
