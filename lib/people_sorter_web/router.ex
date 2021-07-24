@@ -13,7 +13,7 @@ defmodule PeopleSorterWeb.Router do
   pipeline :api do
     plug :accepts, ["json"]
 
-    get "/records/dob", PeopleSorterWeb.RecordController, :dob
+    get "/records/birthdate", PeopleSorterWeb.RecordController, :dob
     get "/records/color", PeopleSorterWeb.RecordController, :color
     get "/records/last_name", PeopleSorterWeb.RecordController, :last_name
 

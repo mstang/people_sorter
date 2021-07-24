@@ -2,6 +2,9 @@
 
 This coding assignment is written in Elixir.
 
+To run the tests:
+ * mix test 
+
 To start the API server:
 
   * Install dependencies with `mix deps.get`
@@ -13,9 +16,12 @@ Now you can make POST API calls to create people:
  * http://localhost:4000/records?person=Dietrich|Cooper|oda2088@langosh.info|Pink|e9/9/1953
 
 Now you can make GET API calls to lists of people:
- * http://localhost:4000/records/dob
+ * http://localhost:4000/records/birthdate
  * http://localhost:4000/records/color
  * http://localhost:4000/records/last_name
+ 
+ If the endpoint doesn't contain a valid sort value, the records are returned unsorted.
+ * http://localhost:4000/records/invalid_sort_value
 
 I provided three example files to test from the command line:
  * text_comman.txt
